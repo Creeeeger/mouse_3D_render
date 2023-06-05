@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="./style.css">
-   <script name="shader" data-src="vertex.glsl" data-type="vertex" data-version="v1"></script>
+    <title>3d: Cube Mouse Rotation</title>
+    <meta name="author" content="David W Parker">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="styles.css" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <canvas id="glcanvas" height="480" width="480">
+      Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
+    </canvas>
+
+    <!-- Shaders -->
+    <script name="shader" data-src="vertex.glsl" data-type="vertex" data-version="v1"></script>
     <script name="shader" data-src="fragment.glsl" data-type="fragment" data-version="v1"></script>
+    <script type="text/javascript" src="signals.js"></script>
     <script type="text/javascript" src="glMatrix.js"></script>
     <script type="text/javascript" src="glUtils.js"></script>
     <script type="text/javascript" src="uiUtils.js"></script>
     <script type="text/javascript" src="index.js"></script>
-  </head>
-  <body>
-    <canvas id="glcanvas" width="720" height="720"></canvas>
   </body>
 </html>
