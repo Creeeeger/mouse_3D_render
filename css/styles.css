@@ -1,0 +1,21 @@
+html , body {
+    font-family: var(--chakra-fonts-body);
+    color: var(--chakra-colors-neutral-700);
+    background: var(--chakra-colors-neutral-white);
+    transition-property: background-color;
+    transition-duration: var(--chakra-transition-duration-normal);
+    line-height: var(--chakra-lineHeights-base);
+ }
+
+canvas {
+    display: block;
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 30px;
+    object-fit: fill;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.3);
+ }
