@@ -31,36 +31,52 @@
   };
 
 var DEFAULT_VERT = [
-  // Vertex coordinates (x, y, z)
-  1.0, 1.0, 1.0,   // Vertex 0
-  -1.0, -1.0, 1.0, // Vertex 1
-  1.0, -1.0, -1.0, // Vertex 2
-  -1.0, 1.0, -1.0,  // Vertex 3
-     1, 1, 1, 1, 1,1,1,1,
-    -1, 1, 1, 1, 1,0,0,1,
-    -1,-1, 1, 1, 0,1,0,1,
-     1,-1, 1, 1, 0,0,1,1,
-     1,-1,-1, 1, 0,1,1,1,
-     1, 1,-1, 1, 1,1,0,1,
-    -1, 1,-1, 1, 1,0,1,1,
-    -1,-1,-1, 1, 0,0,0,1,
+    -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0, 1.0, -1.0, 1.0, 1.0,    // Front face
+    -1.0, -1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, -1.0, -1.0,   // Back face
+    -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, // Top face
+    -1.0, -1.0, -1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, -1.0, -1.0, 1.0,    // Bottom face
+     1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0, 1.0, -1.0, 1.0,     // Right face
+    -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, -1.0,  
 ];
 
 var DEFAULT_INDICES = new Uint8Array([
-  0, 1, 2, // Face 0
-  0, 3, 1, // Face 1
-  0, 2, 3, // Face 2
-  1, 3, 2 , // Face 3
-    0, 1, 2,   0, 2, 3,    // front
-    0, 3, 4,   0, 4, 5,    // right
-    0, 5, 6,   0, 6, 1,    // up
-    1, 6, 7,   1, 7, 2,    // left
-    7, 4, 3,   7, 3, 2,    // down
-    4, 7, 6,   4, 6, 5     // back
+    0,
+    1,
+    2,
+    0,
+    2,
+    3, // front
+    4,
+    5,
+    6,
+    4,
+    6,
+    7, // back
+    8,
+    9,
+    10,
+    8,
+    10,
+    11, // top
+    12,
+    13,
+    14,
+    12,
+    14,
+    15, // bottom
+    16,
+    17,
+    18,
+    16,
+    18,
+    19, // right
+    20,
+    21,
+    22,
+    20,
+    22,
+    23, // left
 ]);
-
-
-
 
   glUtils.SL.init({ callback:function() { main(); } });
 
@@ -73,11 +89,6 @@ var DEFAULT_INDICES = new Uint8Array([
     animate();
   }
 
-  /*
-  * Initialization
-  * www.programmingtil.com
-  * www.codenameparkerllc.com
-  */
   function initCallbacks() {
     document.onkeydown = keydown;
     document.onkeyup = keyup;
@@ -93,15 +104,10 @@ var DEFAULT_INDICES = new Uint8Array([
   }
 
   function initGL() {
-    state.gl.clearColor(0,0,0,1);
+    state.gl.clearColor(1,0,1,1);
     state.gl.enable(state.gl.DEPTH_TEST);
   }
 
-  /*
-  * Rendering / Drawing / Animation
-  * www.programmingtil.com
-  * www.codenameparkerllc.com
-  */
   function animate() {
     state.animation.tick = function() {
       updateState();
