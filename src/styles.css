@@ -1,4 +1,4 @@
-html , body {
+body {
     font-family: var(--chakra-fonts-body);
     color: var(--chakra-colors-neutral-700);
     background: var(--chakra-colors-neutral-white);
@@ -7,7 +7,7 @@ html , body {
     line-height: var(--chakra-lineHeights-base);
  }
 
-canvas {
+canvas.webgl {
     display: block;
     width: 50%;
     height: 50%;
