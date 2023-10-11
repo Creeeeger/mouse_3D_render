@@ -4,7 +4,6 @@ import { Camera, Material, Texture } from "https://cdn.skypack.dev@0.132.2";
 import { OrbitControls } from "https://cdn.skypack.dev@0.132.2/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "https://cdn.skypack.dev@0.132.2/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from "https://cdn.skypack.dev@0.132.2/examples/jsm/loaders/RGBELoader.js";
-export {default} from '/-/three@v0.132.2-dLPTyDAYt6rc6aB18fLm/dist=es2019,mode=imports/unoptimized/examples/jsm/controls/OrbitControls.js';
       // Canvas
       const canvas = document.querySelector("canvas.webgl");
       const scene = new THREE.Scene();
