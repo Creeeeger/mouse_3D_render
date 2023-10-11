@@ -1,7 +1,8 @@
-      import * as THREE from "three";
-      import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-      import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-      import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+
+import { Camera, Material, Texture } from "https://cdn.skypack.dev@0.132.2";
+import { OrbitControls } from "https://cdn.skypack.dev@0.132.2/examples/jsm/controls/OrbitControls.js";
+import { GLTFLoader } from "https://cdn.skypack.dev@0.132.2/examples/jsm/loaders/GLTFLoader.js";
+import { RGBELoader } from "https://cdn.skypack.dev@0.132.2/examples/jsm/loaders/RGBELoader.js";
 
       // Canvas
       const canvas = document.querySelector("canvas.webgl");
