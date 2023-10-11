@@ -62,7 +62,7 @@ import { RGBELoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders
         new RGBELoader()
           .setDataType(THREE.HalfFloatType)
           .load(
-            "/src/royal_esplanade_1k.hdr",
+            "/mouse_3D_render/src/royal_esplanade_1k.hdr",
             function (texture) {
               const pmremGenerator = new THREE.PMREMGenerator(renderer);
               pmremGenerator.compileEquirectangularShader();
