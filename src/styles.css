@@ -1,11 +1,12 @@
 body {
     font-family: var(--chakra-fonts-body);
     color: var(--chakra-colors-neutral-700);
-    background: var(--chakra-colors-neutral-white);
+    background: #333; /* Change to the dark gray color of your choice */
     transition-property: background-color;
     transition-duration: var(--chakra-transition-duration-normal);
     line-height: var(--chakra-lineHeights-base);
- }
+}
+
 
 canvas.webgl {
     display: block;
