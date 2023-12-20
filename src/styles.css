@@ -1,7 +1,8 @@
 body {
     font-family: var(--chakra-fonts-body);
     color: var(--chakra-colors-neutral-700);
-    background: #333; /* Change to the dark gray color of your choice */
+    background: #333;
+    /* Change to the dark gray color of your choice */
     transition-property: background-color;
     transition-duration: var(--chakra-transition-duration-normal);
     line-height: var(--chakra-lineHeights-base);
@@ -20,43 +21,43 @@ canvas.webgl {
     object-fit: fill;
     box-shadow: 0 15px 15px rgba(0, 0, 0, 0.3);
 
- }
+}
 
 .container {
-  display: flex;
+    display: flex;
 }
 
 .color-box {
-  margin-left: 20px;
-  display: flex;
-  flex-direction: column;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .color-button {
-  margin-bottom: 10px;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 
 }
 
 #buttonRed {
-  background-color: red;
-  color: white;
+    background-color: red;
+    color: white;
 }
 
 #buttonBlue {
-  background-color: blue;
-  color: white;
+    background-color: blue;
+    color: white;
 }
 
 #buttonGreen {
-  background-color: green;
-  color: white;
+    background-color: green;
+    color: white;
 }
 
 #buttonYellow {
-  background-color: yellow;
-  color: black;
+    background-color: yellow;
+    color: black;
 }

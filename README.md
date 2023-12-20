@@ -5,7 +5,6 @@ Run:
 ```
 npx vite
 ```
-
 Open:
 ```
 http://localhost:5173/
