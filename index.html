@@ -1,23 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
   <head>
-    <title>Three.js Basics</title>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>3D Model Explorer</title>
     <link rel="stylesheet" href="./src/styles.css" />
   </head>
   <body>
-  <div class="container">
-    <canvas class="webgl"></canvas>
-  </div>
-  <div class="container">
-    <div class="color-box">
-      <button class="color-button" id="buttonRed">Red</button>
-      <button class="color-button" id="buttonBlue">Blue</button>
-      <button class="color-button" id="buttonGreen">Green</button>
-      <button class="color-button" id="buttonYellow">Yellow</button>
-    </div>
-  </div>
+    <header class="app-header">
+      <h1>3D Model Explorer</h1>
+      <p>Wechsle zwischen verschiedenen GLTF-Demos und erkunde sie frei im Raum.</p>
+    </header>
+
+    <main class="app-content">
+      <canvas class="webgl" aria-label="3D Szene"></canvas>
+
+      <section class="control-panel" aria-label="Modellauswahl">
+        <h2>Modelle</h2>
+        <div class="button-grid">
+          <button class="color-button" id="buttonRed">Toy Car</button>
+          <button class="color-button" id="buttonBlue">Boom Box</button>
+          <button class="color-button" id="buttonGreen">Environment Test</button>
+          <button class="color-button" id="buttonYellow">Barramundi Fish</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <small>HDRI: Royal Esplanade &mdash; © Poly Haven</small>
+    </footer>
+
     <script src="src/index.js" type="module"></script>
   </body>
 </html>
-

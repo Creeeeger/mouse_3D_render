@@ -1,117 +1,148 @@
-import * as THREE from 'https://unpkg.com/three@0.127.0/build/three.module.js';
-import {OrbitControls} from 'https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js'
-import { GLTFLoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/GLTFLoader.js';
-import { RGBELoader } from 'https://unpkg.com/three@0.127.0/examples/jsm/loaders/RGBELoader.js';
+import * as THREE from 'https://unpkg.com/three@0.164.1/build/three.module.js';
+import { OrbitControls } from 'https://unpkg.com/three@0.164.1/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from 'https://unpkg.com/three@0.164.1/examples/jsm/loaders/GLTFLoader.js';
+import { RGBELoader } from 'https://unpkg.com/three@0.164.1/examples/jsm/loaders/RGBELoader.js';
 
-// Canvas
-const canvas = document.querySelector("canvas.webgl");
+const canvas = document.querySelector('canvas.webgl');
 const scene = new THREE.Scene();
-let renderer;
-let camera;
 
-// Define the function to load a new 3D model
-function loadModel(modelUrl) {
-    // Remove the current model from the scene, if any
-    scene.remove(scene.getObjectByName("currentModel"));
-
-    const loader = new GLTFLoader();
-    loader.load(
-        modelUrl,
-        function(gltf) {
-            const newModel = gltf.scene;
-            newModel.name = "currentModel"; // Set a name to the model for easy removal
-
-            // Position, scale, or modify the new model as needed
-            newModel.position.set(0, 0, 0);
-            newModel.scale.set(1, 1, 1);
-
-            scene.add(newModel);
-            render(); // Render the scene with the new model
-        }
-    );
-}
-
-// Add event listeners to the buttons
-document.getElementById("buttonRed").addEventListener("click", function() {
-    loadModel("https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/ToyCar/glTF/ToyCar.gltf"); //colour 1
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+  canvas,
+  alpha: true
 });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1;
+renderer.outputEncoding = THREE.sRGBEncoding;
 
-document.getElementById("buttonBlue").addEventListener("click", function() {
-    loadModel("https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoomBox/glTF/BoomBox.gltf"); //colour 2 
-});
+const camera = new THREE.PerspectiveCamera(
+  45,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  100
+);
+camera.position.set(2.5, 1.2, 4.5);
+scene.add(camera);
 
-document.getElementById("buttonGreen").addEventListener("click", function() {
-    loadModel("https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/EnvironmentTest/glTF/EnvironmentTest.gltf"); //colour 4
-});
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.minDistance = 1.5;
+controls.maxDistance = 10;
+controls.target.set(0, 0.75, 0);
+controls.update();
 
-document.getElementById("buttonYellow").addEventListener("click", function() {
-    loadModel("https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BarramundiFish/glTF/BarramundiFish.gltf"); //colour 3
-});
+const pmremGenerator = new THREE.PMREMGenerator(renderer);
+pmremGenerator.compileEquirectangularShader();
 
-function init() {
-    // Setup the camera
-    camera = new THREE.PerspectiveCamera(
-        45,
-        window.innerWidth / window.innerHeight,
-        0.25,
-        20
-    );
-    camera.position.set(-1.8, 0.6, 2.7);
+new RGBELoader()
+  .setDataType(THREE.HalfFloatType)
+  .load(
+    'src/royal_esplanade_1k.hdr',
+    (texture) => {
+      const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+      scene.background = envMap;
+      scene.environment = envMap;
 
-    // Load and create the environment
-    new RGBELoader()
-        .setDataType(THREE.HalfFloatType)
-        .load(
-            "src/royal_esplanade_1k.hdr",
-            function(texture) {
-                const pmremGenerator = new THREE.PMREMGenerator(renderer);
-                pmremGenerator.compileEquirectangularShader();
-                const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+      texture.dispose();
+      pmremGenerator.dispose();
+    },
+    undefined,
+    (error) => console.error('Failed to load HDR environment.', error)
+  );
 
-                scene.background = envMap; // This loads the envMap for the background
-                scene.environment = envMap; // This loads the envMap for reflections and lighting
+const gltfLoader = new GLTFLoader();
+let currentModel = null;
 
-                texture.dispose(); // We have envMap so we can erase the texture
-                pmremGenerator.dispose(); // We processed the image into envMap so we can stop this
-            }
-        );
+async function loadModel(modelUrl) {
+  try {
+    const gltf = await gltfLoader.loadAsync(modelUrl);
+    const newModel = gltf.scene;
+    newModel.name = 'currentModel';
 
-    // Load the initial model
-    loadModel("https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/AnimatedMorphCube/glTF/AnimatedMorphCube.gltf"); // Add the initial model to load
+    newModel.position.set(0, 0, 0);
+    newModel.scale.set(1, 1, 1);
 
-    // Setup the renderer
-    renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        canvas: canvas
+    newModel.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
     });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping; // Added contrast for filmic look
-    renderer.toneMappingExposure = 1;
-    renderer.outputEncoding = THREE.sRGBEncoding; // Extended color space for the hdr
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.addEventListener("change", render); // Use if there is no animation loop to render after any changes
-    controls.minDistance = 2;
-    controls.maxDistance = 10;
-    controls.target.set(0, 0, -0.2);
-    controls.update();
+    if (currentModel) {
+      disposeModel(currentModel);
+      scene.remove(currentModel);
+    }
 
-    window.addEventListener("resize", onWindowResize);
+    currentModel = newModel;
+    scene.add(currentModel);
+  } catch (error) {
+    console.error(`Failed to load model from ${modelUrl}`, error);
+  }
 }
 
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+function disposeModel(model) {
+  model.traverse((child) => {
+    if (!child.isMesh) return;
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    if (child.geometry) {
+      child.geometry.dispose();
+    }
 
-    render();
+    const materials = Array.isArray(child.material)
+      ? child.material
+      : [child.material];
+
+    materials.forEach((material) => {
+      if (!material) return;
+
+      for (const key of Object.keys(material)) {
+        const value = material[key];
+        if (value && typeof value === 'object' && 'minFilter' in value) {
+          value.dispose?.();
+        }
+      }
+
+      material.dispose?.();
+    });
+  });
 }
+
+const presets = {
+  buttonRed:
+    'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/ToyCar/glTF/ToyCar.gltf',
+  buttonBlue:
+    'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoomBox/glTF/BoomBox.gltf',
+  buttonGreen:
+    'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/EnvironmentTest/glTF/EnvironmentTest.gltf',
+  buttonYellow:
+    'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BarramundiFish/glTF/BarramundiFish.gltf'
+};
+
+Object.entries(presets).forEach(([buttonId, modelUrl]) => {
+  const button = document.getElementById(buttonId);
+  if (!button) return;
+
+  button.addEventListener('click', () => loadModel(modelUrl));
+});
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
 
 function render() {
-    renderer.render(scene, camera);
+  controls.update();
+  renderer.render(scene, camera);
 }
 
-init(); // Our setup
-render(); // The update loop
+renderer.setAnimationLoop(render);
+
+loadModel(
+  'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/AnimatedMorphCube/glTF/AnimatedMorphCube.gltf'
+);
